@@ -1,0 +1,16 @@
+.grid-container {
+    display: block;
+}
+.grid-item {
+    display: inline-block;
+    border: 1px solid #eee;
+    width: 180px;
+    height: 50px;
+}
+.grid-item-selected{
+     
+    background-color: #8aabaa;
+}
+ 
+ 
+ 

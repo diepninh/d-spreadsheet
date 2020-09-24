@@ -1,0 +1,33 @@
+.containIn{
+    cursor: cell;
+    position: absolute;
+    
+}
+.pointer{
+    width: 10px;
+    height: 10px;
+    background-color: blue;
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    cursor: crosshair;
+}
+.inputValue{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 150px;
+    height: 20px;
+    border: none;
+    background-color: none;
+}
+.displayNoInput{
+    width: 100px;
+    top: 0px;
+    display: none;
+}
+.displayInput{
+    width: 100px;
+    top: 0px;
+    display: " ";
+}
