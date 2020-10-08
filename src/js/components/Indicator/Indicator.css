@@ -1,9 +1,11 @@
 .containIn{
     cursor: cell;
     position: absolute;
-    
 }
-.pointer{
+.containIn > div, .containIn > div > input {
+    position: absolute;
+}
+.containIn > div.pointer{
     width: 10px;
     height: 10px;
     background-color: blue;

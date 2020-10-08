@@ -1,0 +1,15 @@
+.numberRow{
+ 
+   width: 30px;
+    
+}
+.itemRow{
+    text-align: center;
+    border: 1px solid #cccccc;
+    background-color: #eee;
+}
+.itemRowIndi{
+    text-align: center;
+    border: 1px solid #cccccc;
+    background-color: #cccccc;
+}

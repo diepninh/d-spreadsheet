@@ -1,0 +1,22 @@
+.wordCol{
+   
+    height: 30px;
+    display: flex;
+}
+.itemCol{
+    border: 1px solid #cccccc;
+    width: 180px;
+    background-color: #eee;}
+
+.itemColFirst{
+    width: 30px;
+    background-color: #eee;
+}
+.formChar{
+    text-align: center;
+}
+.itemColIndi{
+    border: 1px solid #cccccc;
+    width: 180px;
+    background-color: #cccccc;
+}

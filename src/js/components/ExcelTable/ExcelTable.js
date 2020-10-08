@@ -1,7 +1,9 @@
 import React from 'react'
 import GridTable from '../GridTable/GridTable.js'
 import Indicator from '../Indicator/Indicator.js'
- 
+import ColWord from '../ColWord/ColWord.js'
+import RowNumber from '../RowNumber/RowNumber.js'
+import ShowResult from '../ShowResult/ShowResult.js'
 class ExcelTable extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +11,7 @@ class ExcelTable extends React.Component {
         for (let i = 0; i < (this.props.dataTable.length); i++) {
 
             tempTable[i] = new Array()
-         for (let j = 0; j < this.props.dataTable[i].length; j++) {
+            for (let j = 0; j < this.props.dataTable[i].length; j++) {
                 tempTable[i][j] = false
 
             }
@@ -22,13 +24,13 @@ class ExcelTable extends React.Component {
             display: "none",
             backGround: "blue",
             keyboard: false,
-            value : "123",
-            rowValue : " ",
-            colValue : " "
+            value: "123",
+            rowValue: " ",
+            colValue: " "
         }
 
     }
-    HightLighted = (row ,col) =>{
+    HightLighted = (row, col) => {
         let oldRow = this.state.row;
         let oldCol = this.state.col;
         let newData = new Array()
@@ -71,11 +73,10 @@ class ExcelTable extends React.Component {
                     }
                 }
             }
-            
+
             this.setState({ selectedTable: newData });
         }
-        else
-        {
+        else {
             for (let i = 0; i < (this.props.dataTable.length); i++) {
                 for (let j = 0; j < this.props.dataTable[i].length; j++) {
                     newData[i][j] = false;
@@ -84,38 +85,40 @@ class ExcelTable extends React.Component {
             this.setState({ selectedTable: newData });
         }
     }
-    GetCellValue = (row,col) => {
-        console.log(row ,col,this.state.dataTable[row][col])
+    GetCellValue = (row, col) => {
         return this.state.dataTable[row][col]
-        
+
     }
-    SetCellValue = (row , col, value) => {
-        this.setState(function(oldState){
+    SetCellValue = (row, col, value) => {
+        this.setState(function (oldState) {
             oldState.dataTable[row][col] = value;
             return oldState
         })
     }
     ChangeIndicatorPosition = (row, col) => {
-       
-        this.setState({ row: parseInt(row), col: parseInt(col) })
-        this.HightLighted(row,col)
-       
+
+        this.setState({ 
+            row: parseInt(row), 
+            col: parseInt(col)
+        });
+        this.HightLighted(row, col)
+
     }
     handleDown = (event) => {
         let oldRow = this.state.row
         let oldCol = this.state.col
         if (event.key === "Shift") { this.setState({ keyboard: true }) }
-        else if(event.key === "ArrowUp" && oldRow >= 1){ this.setState({row : oldRow-1})}
-        else if(event.key === "ArrowDown"&& oldRow < this.state.dataTable.length-1){ this.setState({row : oldRow + 1})}
-        else if(event.key === "ArrowRight" && oldCol < this.state.dataTable.length-1){ this.setState({col :  oldCol +1})}
-        else if(event.key === "ArrowLeft"&&oldCol >=1){this.setState({col : oldCol -1})}
+        else if (event.key === "ArrowUp" && oldRow >= 1) { this.setState({ row: oldRow - 1 }) }
+        else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) { this.setState({ row: oldRow + 1 }) }
+        else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) { this.setState({ col: oldCol + 1 }) }
+        else if (event.key === "ArrowLeft" && oldCol >= 1) { this.setState({ col: oldCol - 1 }) }
     }
-    handleUp = (event) =>{
-        this.setState({keyboard : false})
+    handleUp = (event) => {
+        this.setState({ keyboard: false })
     }
-    UpdateValue = (value)=>{
-       this.setState({value : value})
-       
+    UpdateValue = (value) => {
+        this.setState({ value: value })
+
     }
 
     componentDidMount(event) {
@@ -128,14 +131,22 @@ class ExcelTable extends React.Component {
     render() {
         return (
             <div className="ExcelTable">
-                <Indicator backGround={"none"} row={this.state.row} col={this.state.col} border={"2px solid blue"}
-                    width={this.props.widthCell} height={this.props.heightCell} value={ this.GetCellValue(this.state.row, this.state.col) } 
-                    OnValueChanged={  (value) =>{this.SetCellValue(this.state.row, this.state.col, value) }  }
-                />
+                <ColWord nColumns={this.props.nColumns} width={this.props.widthCell} colIndi={this.state.col}/>
+                <div style={{display : "flex"}}>
+                    <RowNumber nRows={this.props.nRows} height={this.props.heightCell} rowIndi={this.state.row} />
+                    
 
-                <GridTable widthCell={this.props.widthCell} heightCell={this.props.heightCell}
-                    dataTable={this.state.dataTable} ChangePosition={this.ChangeIndicatorPosition} selectedTable={this.state.selectedTable}  
-                />
+                    <GridTable widthCell={this.props.widthCell} heightCell={this.props.heightCell}
+                        dataTable={this.state.dataTable} ChangePosition={this.ChangeIndicatorPosition} selectedTable={this.state.selectedTable}
+                    />
+                    <Indicator backGround={"yellow"} row={this.state.row} col={this.state.col} border={"2px solid blue"}
+                        width={this.props.widthCell} height={this.props.heightCell} value={this.GetCellValue(this.state.row, this.state.col)}
+                        OnValueChanged={(value) => { this.SetCellValue(this.state.row, this.state.col, value) }}
+                    />
+                    <ShowResult TableResult={this.state.dataTable} />
+
+                </div>
+                
             </div>
         )
     }

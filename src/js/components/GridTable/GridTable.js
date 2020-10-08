@@ -5,14 +5,13 @@ class GridTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+
         }
     }
     GetPosition = (row, col) => {
         this.props.ChangePosition(row, col)
-        console.log(this.props.value)
     }
-   
+
     render() {
         return (
 
@@ -28,15 +27,18 @@ class GridTable extends React.Component {
 
                                         onClick={() => this.GetPosition(row, col)}
                                     >
-                                        {el}
+                                        <div className="styleText">
+                                            {el}
                                         </div>
+
+                                    </div>
                                 )}
                             </div>
                         )
                     })
 
                 }
-               
+
             </div>
 
         )

@@ -1,16 +1,25 @@
 .grid-container {
     display: block;
+  
+}
+.grid-row {
+    height: 52px;
 }
 .grid-item {
     display: inline-block;
     border: 1px solid #eee;
     width: 180px;
-    height: 50px;
+    height: 50px; 
+    background: pink;
+    position: relative;
 }
 .grid-item-selected{
-     
     background-color: #8aabaa;
 }
- 
+.styleText{
+    text-align: center;
+    margin-top: 18px;
+    position: absolute;
+} 
  
  
