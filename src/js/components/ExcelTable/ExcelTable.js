@@ -3,44 +3,23 @@ import GridTable from '../GridTable/GridTable.js'
 import Indicator from '../Indicator/Indicator.js'
 import ColWord from '../ColWord/ColWord.js'
 import RowNumber from '../RowNumber/RowNumber.js'
-import ShowResult from '../ShowResult/ShowResult.js'
+import { connect } from 'react-redux';
+import * as actions from '../../actions/index';
 class ExcelTable extends React.Component {
     constructor(props) {
         super(props);
-        let tempTable = new Array()
-        for (let i = 0; i < (this.props.dataTable.length); i++) {
-
-            tempTable[i] = new Array()
-            for (let j = 0; j < this.props.dataTable[i].length; j++) {
-                tempTable[i][j] = false
-
-            }
-        }
-        this.state = {
-            row: 0,
-            col: 0,
-            dataTable: this.props.dataTable,
-            selectedTable: tempTable,
-            display: "none",
-            backGround: "blue",
-            keyboard: false,
-            value: "123",
-            rowValue: " ",
-            colValue: " "
-        }
-
     }
     HightLighted = (row, col) => {
-        let oldRow = this.state.row;
-        let oldCol = this.state.col;
+        let oldRow = this.props.row;
+        let oldCol = this.props.col;
         let newData = new Array()
-        for (let i = 0; i < (this.props.dataTable.length); i++) {
+        for (let i = 0; i < this.props.nRows; i++) {
             newData[i] = new Array()
-            for (let j = 0; j < this.props.dataTable[i].length; j++) {
+            for (let j = 0; j < this.props.nColumns; j++) {
                 newData[i][j] = false;
             }
         }
-        if (this.state.keyboard === true) {
+        if (this.props.keyboard === true) {
             if (oldRow <= row) {
                 if (oldCol <= col) {
                     for (let i = oldRow; i <= row; i++) {
@@ -74,81 +53,193 @@ class ExcelTable extends React.Component {
                 }
             }
 
-            this.setState({ selectedTable: newData });
+            this.props.selectedCell(newData);
         }
         else {
-            for (let i = 0; i < (this.props.dataTable.length); i++) {
-                for (let j = 0; j < this.props.dataTable[i].length; j++) {
+            for (let i = 0; i < (this.props.nRows); i++) {
+                for (let j = 0; j < this.props.nColumns; j++) {
                     newData[i][j] = false;
                 }
             }
-            this.setState({ selectedTable: newData });
+            this.props.selectedCell(newData);
         }
     }
-    GetCellValue = (row, col) => {
-        return this.state.dataTable[row][col]
-
-    }
-    SetCellValue = (row, col, value) => {
-        this.setState(function (oldState) {
-            oldState.dataTable[row][col] = value;
-            return oldState
-        })
-    }
     ChangeIndicatorPosition = (row, col) => {
-
-        this.setState({ 
-            row: parseInt(row), 
-            col: parseInt(col)
-        });
-        this.HightLighted(row, col)
-
+        this.props.showInput(false);
+        this.HightLighted(row, col);
+        this.props.getPosition(row, col);
+        this.props.checkPointer(true);
     }
     handleDown = (event) => {
-        let oldRow = this.state.row
-        let oldCol = this.state.col
-        if (event.key === "Shift") { this.setState({ keyboard: true }) }
-        else if (event.key === "ArrowUp" && oldRow >= 1) { this.setState({ row: oldRow - 1 }) }
-        else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) { this.setState({ row: oldRow + 1 }) }
-        else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) { this.setState({ col: oldCol + 1 }) }
-        else if (event.key === "ArrowLeft" && oldCol >= 1) { this.setState({ col: oldCol - 1 }) }
+        let oldRow = this.props.row
+        let oldCol = this.props.col
+        if (event.key === "Shift") { this.props.changeKeyboard(true) }
+        else if (event.key === "ArrowUp" && oldRow >= 1) {
+            this.props.checkKey(oldRow - 1, oldCol);
+            this.props.showInput(false);
+            this.props.checkPointer(true);
+        }
+        else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) {
+            this.props.checkKey(oldRow + 1, oldCol);
+            this.props.showInput(false);
+            this.props.checkPointer(true);
+        }
+        else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) {
+            this.props.checkKey(oldRow, oldCol + 1);
+            this.props.showInput(false);
+            this.props.checkPointer(true);
+        }
+        else if (event.key === "ArrowLeft" && oldCol >= 1) {
+            this.props.checkKey(oldRow, oldCol - 1);
+            this.props.showInput(false);
+            this.props.checkPointer(true);
+        }
+        else {
+
+        }
     }
     handleUp = (event) => {
-        this.setState({ keyboard: false })
+        this.props.changeKeyboard(false)
     }
-    UpdateValue = (value) => {
-        this.setState({ value: value })
-
-    }
-
     componentDidMount(event) {
 
         window.addEventListener("keydown", this.handleDown)
         window.addEventListener("keyup", this.handleUp)
 
     }
+    ChangeWidthRow = (value) => {
+        this.props.changeWidth(parseInt(value));
+    }
+    ChangeHeightCol = (value) => {
+        this.props.changeHeightCol(parseInt(value));
+    }
+    ChangeWidthCell = (value) => {
+        this.props.changeWidthCell(parseInt(value));
+    }
+    ChangeHeightCell = (value) => {
+        this.props.changeHeightCell(parseInt(value));
+    }
+    ChangeRow = (value) =>{
+        if(value < this.props.nRows){
+        this.props.changeRow(parseInt(value));}
+    }
+    ChangeCol = (value) =>{
+        if(value< this.props.nColumns){
+        this.props.changeCol(parseInt(value));}
+    }
+    Submit = (event) => {
+        event.preventDefault();
+    }
+    SelectAllCell = () => {
+        let newData = new Array()
+        for (let i = 0; i < this.props.nRows; i++) {
+            newData[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newData[i][j] = true;
+            }
+        }
+        this.props.selectedCell(newData);
+        this.props.checkPointer(false);
+        this.props.getPosition(0, 0);
+    }
 
     render() {
         return (
             <div className="ExcelTable">
-                <ColWord nColumns={this.props.nColumns} width={this.props.widthCell} colIndi={this.state.col}/>
-                <div style={{display : "flex"}}>
-                    <RowNumber nRows={this.props.nRows} height={this.props.heightCell} rowIndi={this.state.row} />
-                    
-
-                    <GridTable widthCell={this.props.widthCell} heightCell={this.props.heightCell}
-                        dataTable={this.state.dataTable} ChangePosition={this.ChangeIndicatorPosition} selectedTable={this.state.selectedTable}
-                    />
-                    <Indicator backGround={"yellow"} row={this.state.row} col={this.state.col} border={"2px solid blue"}
-                        width={this.props.widthCell} height={this.props.heightCell} value={this.GetCellValue(this.state.row, this.state.col)}
-                        OnValueChanged={(value) => { this.SetCellValue(this.state.row, this.state.col, value) }}
-                    />
-                    <ShowResult TableResult={this.state.dataTable} />
+                <div style={{ display: "flex" }}>
+                    <div style={{
+                        width: this.props.widthRow, height: this.props.heightCol,
+                        backgroundColor: '#eee', borderRight: '2px solid #ccc'
+                    }}
+                        onClick={this.SelectAllCell}
+                    > </div>
+                    <ColWord />
+                </div>
+                <div style={{ display: "flex" }}>
+                    <RowNumber />
+                    <GridTable ChangePosition={this.ChangeIndicatorPosition} />
+                    <Indicator backGround={"none"} border={"2px solid blue"} />
 
                 </div>
-                
+                <form onSubmit={(event) => this.Submit(event)}>
+                    <label>widthRow :
+                        <input type="text" onChange={(event) => this.ChangeWidthRow(event.target.value)} />
+                    </label>
+                    <label>heightCol :
+                        <input type="text" onChange={(event) => this.ChangeHeightCol(event.target.value)} />
+                    </label>
+                    <label>widthCell :
+                        <input type="text" onChange={(event) => this.ChangeWidthCell(event.target.value)} />
+                    </label>
+                    <label>heightCell :
+                        <input type="text" onChange={(event) => this.ChangeHeightCell(event.target.value)} />
+                    </label>
+                    <label>Col :
+                        <input type="text" onChange={(event) => this.ChangeCol(event.target.value)} />
+                    </label>
+                     <label>Row :
+                        <input type="text" onChange={(event) => this.ChangeRow(event.target.value)} />
+                    </label>
+                </form>
+                {this.props.dataTable}
             </div>
         )
     }
 }
-export default ExcelTable
+const mapStateToProps = (state) => {
+    return {
+        dataTable: state.excel.dataTable,
+        row: state.excel.row,
+        col: state.excel.col,
+        selectedTable: state.excel.selectedTable,
+        nRows: state.excel.nRows,
+        nColumns: state.excel.nColumns,
+        keyboard: state.excel.keyboard,
+        widthRow: state.excel.widthRow,
+        showInputFlag: state.excel.showInputFlag,
+        value: state.excel.value,
+        heightCol: state.excel.heightCol,
+    }
+}
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        getPosition: (row, col) => {
+            dispatch(actions.getPosition(row, col))
+
+        },
+        selectedCell: (newData) => {
+            dispatch(actions.selectedCell(newData))
+        },
+        checkKey: (row, col) => {
+            dispatch(actions.checkKey(row, col))
+        },
+        changeKeyboard: (status) => {
+            dispatch(actions.changeKeyboard(status))
+        },
+        showInput: (status) => {
+            dispatch(actions.showInput(status))
+        },
+        changeWidth: (value) => {
+            dispatch(actions.changeWidth(value))
+        },
+        changeHeightCol: (value) => {
+            dispatch(actions.changeHeightCol(value))
+        },
+        changeHeightCell: (value) => {
+            dispatch(actions.changeHeightCell(value))
+        },
+        changeWidthCell: (value) => {
+            dispatch(actions.changeWidthCell(value))
+        },
+        checkPointer: (status) => {
+            dispatch(actions.checkPointer(status))
+        },
+        changeRow : (row) =>{
+            dispatch(actions.changeRow(row))
+        },
+        changeCol: (col) =>{
+            dispatch(actions.changeCol(col))
+        },
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ExcelTable);

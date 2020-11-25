@@ -14,6 +14,11 @@
     right: -5px;
     cursor: crosshair;
 }
+.containIn > div.pointerNone{
+    width: 0px;
+    height: 0px;
+     
+}
 .inputValue{
     position: absolute;
     top: 10px;
@@ -24,12 +29,14 @@
     background-color: none;
 }
 .displayNoInput{
-    width: 100px;
-    top: 0px;
+    border: none;
+    outline: none;
     display: none;
+    text-align: center;
 }
 .displayInput{
-    width: 100px;
-    top: 0px;
+    border: none;
+    outline: none;
     display: " ";
+    text-align: center;
 }

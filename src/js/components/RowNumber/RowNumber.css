@@ -1,8 +1,4 @@
-.numberRow{
  
-   width: 30px;
-    
-}
 .itemRow{
     text-align: center;
     border: 1px solid #cccccc;
@@ -10,6 +6,6 @@
 }
 .itemRowIndi{
     text-align: center;
-    border: 1px solid #cccccc;
+    border-right: 3px solid blue;
     background-color: #cccccc;
 }

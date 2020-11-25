@@ -1,5 +1,6 @@
 import React from "react";
 import './ShowResult.css';
+import {connect} from 'react-redux';
 class ShowResult extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +10,7 @@ class ShowResult extends React.Component {
         return (
             <div className="ShowResult result-contain">
                 {
-                    this.props.TableResult.map((e, row) => {
+                    this.props.dataTable.map((e, row) => {
                         return (
                             <div key={row} className="resultRow">
                                 {e.map((el, col) =>
@@ -27,4 +28,9 @@ class ShowResult extends React.Component {
         )
     }
 }
-export default ShowResult;
+const mapStateToProps =(state) =>{
+    return{
+        dataTable : state.excel.dataTable,
+    }
+}
+export default connect(mapStateToProps,null)(ShowResult);
