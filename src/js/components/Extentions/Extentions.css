@@ -1,0 +1,27 @@
+.toolBar{
+     
+    height: 70px;
+    background-color: whitesmoke;
+}
+
+.formInput{
+    height: 35px;
+    background-color: white;
+}
+.extentions{
+    height: 35px;
+    display: flex;
+}
+.customButton{
+    background-color: none;
+    border: none;
+    width: 40px;
+    height: 35px;
+    font-size: 18px;
+    color: gray;
+}
+.formSizeText{
+    background-color: none;
+    width: 100px;
+    border: none;
+}

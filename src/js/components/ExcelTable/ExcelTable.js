@@ -5,9 +5,25 @@ import ColWord from '../ColWord/ColWord.js'
 import RowNumber from '../RowNumber/RowNumber.js'
 import { connect } from 'react-redux';
 import * as actions from '../../actions/index';
+import Extentions from '../Extentions/Extentions.js';
 class ExcelTable extends React.Component {
     constructor(props) {
         super(props);
+    }
+    ChangeTextStyleWhenHightLighted = ( newData) =>{
+       if(this.props.textStatus === "bold"){
+        let newValue = newData;
+        
+       newValue === "bold";
+            
+            this.props.changeBold(newValue);
+       }
+       else if( this.props.textStatus === "italic"){
+           this.props.changeInti(newData);
+       }
+       else if(this.props.textStatus === "normal"){
+           this.props.changeNor(newData);
+       }
     }
     HightLighted = (row, col) => {
         let oldRow = this.props.row;
@@ -54,6 +70,7 @@ class ExcelTable extends React.Component {
             }
 
             this.props.selectedCell(newData);
+            this.ChangeTextStyleWhenHightLighted(newData);
         }
         else {
             for (let i = 0; i < (this.props.nRows); i++) {
@@ -70,29 +87,75 @@ class ExcelTable extends React.Component {
         this.props.getPosition(row, col);
         this.props.checkPointer(true);
     }
+    EventKeyBoardChangeValue = (row, col) => {
+        this.props.showInput(false);
+        this.props.checkPointer(true);
+        let newValue = new Array();
+        for (let i = 0; i < this.props.nRows; i++) {
+            newValue[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newValue[i][j] = this.props.dataTable[i][j];
+            }
+        }
+        if (this.props.value[0] != '=') {
+            newValue[row][col] = this.props.value;
+        }
+        else {
+            if (this.props.value.length === 1) {
+                newValue[row][col] = '';
+            } else if (this.props.value[1] > 'a' && this.props.value[1] < 'z' || this.props.value[1] > 'A' && this.props.value[1] < 'Z') {
+                for (let i = 0; i < this.props.value.length; i++) {
+                    for (let j = 1; j < this.props.value.length; j++) {
+                        if (this.props.value[i] > 'a' && this.props.value[i] < 'z' || this.props.value[i] > 'A' && this.props.value[i] < 'Z') {
+                            newValue[row][col] = '#NAME?';
+                        }
+                        else if (this.props.value[i] === '+' || this.props.value[i] === '-' || this.props.value[i] === '*' || this.props.value[i] === '/') {
+                            if (this.props.value[j] === '+') {
+                                newValue[row][col] = '#ERROR!';
+                            }
+                        }
+                    }
+                }
+            }
+            else if (this.props.value[1] >= 0 && this.props.value[1] <= 9) {
+                newValue[row][col] = require("../../../calculator").parse(this.props.value.slice(1));
+            }
+
+
+        }
+        this.props.setValue(newValue)
+    }
     handleDown = (event) => {
         let oldRow = this.props.row
         let oldCol = this.props.col
         if (event.key === "Shift") { this.props.changeKeyboard(true) }
         else if (event.key === "ArrowUp" && oldRow >= 1) {
             this.props.checkKey(oldRow - 1, oldCol);
+            this.EventKeyBoardChangeValue(this.props.row + 1, this.props.col);
             this.props.showInput(false);
             this.props.checkPointer(true);
+            this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
         }
         else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) {
             this.props.checkKey(oldRow + 1, oldCol);
+            this.EventKeyBoardChangeValue(this.props.row - 1, this.props.col);
             this.props.showInput(false);
             this.props.checkPointer(true);
+            this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
         }
         else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) {
             this.props.checkKey(oldRow, oldCol + 1);
+            this.EventKeyBoardChangeValue(this.props.row, this.props.col - 1);
             this.props.showInput(false);
             this.props.checkPointer(true);
+            this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
         }
         else if (event.key === "ArrowLeft" && oldCol >= 1) {
             this.props.checkKey(oldRow, oldCol - 1);
+            this.EventKeyBoardChangeValue(this.props.row, this.props.col + 1);
             this.props.showInput(false);
             this.props.checkPointer(true);
+            this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
         }
         else {
 
@@ -119,13 +182,15 @@ class ExcelTable extends React.Component {
     ChangeHeightCell = (value) => {
         this.props.changeHeightCell(parseInt(value));
     }
-    ChangeRow = (value) =>{
-        if(value < this.props.nRows){
-        this.props.changeRow(parseInt(value));}
+    ChangeRow = (value) => {
+        if (value < this.props.nRows) {
+            this.props.changeRow(parseInt(value));
+        }
     }
-    ChangeCol = (value) =>{
-        if(value< this.props.nColumns){
-        this.props.changeCol(parseInt(value));}
+    ChangeCol = (value) => {
+        if (value < this.props.nColumns) {
+            this.props.changeCol(parseInt(value));
+        }
     }
     Submit = (event) => {
         event.preventDefault();
@@ -146,7 +211,31 @@ class ExcelTable extends React.Component {
     render() {
         return (
             <div className="ExcelTable">
-                <div style={{ display: "flex" }}>
+
+                <Extentions />
+
+                <div  >
+                    <div style={{ display: "flex", width: this.props.width * (this.props.nColumns + 1) + this.props.widthRow }}>
+                        <div style={{
+                            width: this.props.widthRow, height: this.props.heightCol,
+                            backgroundColor: '#eee', borderRight: '2px solid #ccc'
+                        }}
+                            onClick={this.SelectAllCell}
+                        > </div>
+                        <ColWord />
+                    </div>
+                    <div style={{ display: "flex" }}>
+                        <RowNumber />
+                        <GridTable ChangePosition={this.ChangeIndicatorPosition} EventKeyBoardChangeValue={this.EventKeyBoardChangeValue} />
+                        <Indicator backGround={"none"} border={"2px solid blue"} />
+
+                    </div>
+                </div>
+
+                {/* <form onSubmit={(event) => this.Submit(event)}>
+                    <label>widthRow :
+                        <input type="text" onChange={(event) => this.ChangeWidthRow(event.target.value)} />
+                    </label><div style={{ display: "flex" ,width : this.props.width *(this.props.nColumns+1) +this.props.widthRow, marginTop: 100}}>
                     <div style={{
                         width: this.props.widthRow, height: this.props.heightCol,
                         backgroundColor: '#eee', borderRight: '2px solid #ccc'
@@ -157,14 +246,12 @@ class ExcelTable extends React.Component {
                 </div>
                 <div style={{ display: "flex" }}>
                     <RowNumber />
-                    <GridTable ChangePosition={this.ChangeIndicatorPosition} />
+                    <GridTable ChangePosition={this.ChangeIndicatorPosition} EventKeyBoardChangeValue={this.EventKeyBoardChangeValue}/>
                     <Indicator backGround={"none"} border={"2px solid blue"} />
 
                 </div>
-                <form onSubmit={(event) => this.Submit(event)}>
-                    <label>widthRow :
-                        <input type="text" onChange={(event) => this.ChangeWidthRow(event.target.value)} />
-                    </label>
+                {/* <form onSubmit={(event) => this.Submit(event)}>
+                    <label
                     <label>heightCol :
                         <input type="text" onChange={(event) => this.ChangeHeightCol(event.target.value)} />
                     </label>
@@ -181,7 +268,7 @@ class ExcelTable extends React.Component {
                         <input type="text" onChange={(event) => this.ChangeRow(event.target.value)} />
                     </label>
                 </form>
-                {this.props.dataTable}
+                {this.props.dataTable} */}
             </div>
         )
     }
@@ -199,6 +286,8 @@ const mapStateToProps = (state) => {
         showInputFlag: state.excel.showInputFlag,
         value: state.excel.value,
         heightCol: state.excel.heightCol,
+        width: state.excel.widthCell,
+        textStatus : state.excel.textStatus,
     }
 }
 const mapDispatchToProps = (dispatch, props) => {
@@ -234,12 +323,28 @@ const mapDispatchToProps = (dispatch, props) => {
         checkPointer: (status) => {
             dispatch(actions.checkPointer(status))
         },
-        changeRow : (row) =>{
+        changeRow: (row) => {
             dispatch(actions.changeRow(row))
         },
-        changeCol: (col) =>{
+        changeCol: (col) => {
             dispatch(actions.changeCol(col))
         },
+        setValue: (newValue) => {
+            dispatch(actions.setValue(newValue))
+        },
+        changeValueFlag: (value) => {
+            dispatch(actions.changeValueFlag(value))
+        },
+        changeBold: (style) =>{
+            dispatch(actions.changeBold(style))
+        },
+        changeInti : (style) =>{
+            dispatch(actions.changeIntinate(style))
+        },
+        changeNor : (style) =>{
+            dispatch(actions.changeNormal(style))
+        },
+
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ExcelTable);

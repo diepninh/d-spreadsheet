@@ -91,3 +91,33 @@ export const changeCol = (col) =>{
         col : col,
     }
 }
+export const changeValueFlag = (value) =>{
+    return{
+        type : types.CHANGEVALUEFLAG,
+        value : value,
+    }
+}
+export const changeBold = (newValue) =>{
+    return{
+        type : types.CHANGEBOLD,
+        newValue : [...newValue],
+    }
+}
+export const changeIntinate = (newValue) =>{
+    return{
+        type : types.CHANGEITALIC,
+        newValue : [...newValue],
+    }
+}
+export const changeNormal = (newValue) =>{
+    return{
+        type : types.CHANGENORMAL,
+        newValue : [...newValue],
+    }
+}
+export const changeTextStatus = (status) =>{
+    return{
+        type : types.CHANGETEXTSTATUS,
+        status : status,
+    }
+}

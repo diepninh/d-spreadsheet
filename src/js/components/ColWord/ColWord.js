@@ -51,10 +51,10 @@ class ColRow extends React.Component {
                             >
                                 <div style ={{display : "flex"}}>
                                 
-                                    <div style={{ textAlign: "center", width: col === this.props.colSize ? this.props.width-10 : (this.props.widthA  )-10 }}>
+                                    <div style={{ textAlign: "center", width: col === this.props.colSize ? this.props.width : (this.props.widthA  )}}>
                                         {e}
                                     </div>
-                                    <div style={{ background: "blue", width: 10, height: this.props.heightCol}}></div>
+                                    {/* <div style={{ background: "blue", width: 10, height: this.props.heightCol}}></div> */}
                                 </div>
 
                             </div>

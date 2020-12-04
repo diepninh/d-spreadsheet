@@ -1,6 +1,6 @@
 import * as types from '../constaints/Actiontypes'
-let nRows = 5
-let nColumns = 6
+let nRows = 18
+let nColumns = 10
 let arrExcel = new Array()
 
 for (let i = 0; i < nRows; i++) {
@@ -11,7 +11,7 @@ for (let i = 0; i < nRows; i++) {
 }
 
 let ColTable = new Array();
-let DataChar = ['A', 'B', 'C', 'D', 'E', 'F']
+let DataChar = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
 for (let i = 0; i < nColumns; i++) {
     ColTable[i] = DataChar[i];
 }
@@ -28,6 +28,14 @@ for (let i = 0; i < nRows; i++) {
     for (let j = 0; j < nColumns; j++) {
         tempTable[i][j] = false
 
+    }
+}
+let styleText = new Array()
+for (let i = 0; i < nRows; i++) {
+
+    styleText[i] = new Array()
+    for (let j = 0; j < nColumns; j++) {
+        styleText[i][j] = "normal"
     }
 }
 
@@ -47,13 +55,15 @@ const initalState = {
     value: "",
     widthRow: 50,
     heightCol: 30,
-    pointer : true,
-    heitghtIndicator : 1 ,
-    widthIndicator : 1,
-    widthA : 180,
-    heightA : 50,
-    rowSize : 3 ,
-    colSize : 4,
+    pointer: true,
+    heitghtIndicator: 1,
+    widthIndicator: 1,
+    widthA: 180,
+    heightA: 50,
+    rowSize: 3,
+    colSize: 4,
+    styleText : styleText,
+    textStatus : "",
 }
 const myReducer = (state = initalState, action) => {
     switch (action.type) {
@@ -95,14 +105,29 @@ const myReducer = (state = initalState, action) => {
             state.heightCell = action.value;
             return { ...state };
         case types.CHECKPOINTER:
-            state.pointer =action.status;
-            return{...state};
+            state.pointer = action.status;
+            return { ...state };
         case types.CHANGEROW:
             state.rowSize = action.row;
-            return{...state};
+            return { ...state };
         case types.CHANGECOL:
             state.colSize = action.col;
-            return{...state};
+            return { ...state };
+        case types.CHANGEVALUEFLAG:
+            state.value = action.value;
+            return { ...state };
+        case types.CHANGEBOLD:
+            state.styleText = [...action.newValue];
+            return { ...state };
+        case types.CHANGEITALIC:
+            state.styleText = [...action.newValue];
+            return { ...state };
+        case types.CHANGENORMAL:
+            state.styleText = [...action.newValue];
+            return { ...state };
+        case types.CHANGETEXTSTATUS:
+            state.textStatus = action.status;
+            return {...state};
         default:
             return state;
     }
