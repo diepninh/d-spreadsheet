@@ -54,11 +54,11 @@ class Extentions extends React.Component {
                     <button onClick={this.changeIntiText} className="customButton" style={{ fontStyle: "italic", fontFamily: "fantasy" }}>I</button>
                     <button onClick={this.changeNorText} className="customButton">N</button>
                     <div>
-                        <form onSubmit={this.handleSubmit} className="formSizeText">
+                        <form onSubmit={this.handleSubmit} >
                             <label>
 
                                 <select  >
-                                    <option value= "10">10</option>
+                                    <option value= "10" className="formSizeText"s>10</option>
                                     <option value="15">15</option>
                                     <option value="20">20</option>
                                     <option value="25">25</option>
