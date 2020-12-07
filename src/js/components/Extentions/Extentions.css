@@ -24,4 +24,22 @@
     background-color: none;
     width: 100px;
     border: none;
+    display: flex;
+}
+.customButton2{
+    background-color: none;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    width: 30px;
+    height: 25px;
+    font-size: 18px;
+    color: gray;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+.formSizeNumber{
+    color:gray;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 15px;
 }

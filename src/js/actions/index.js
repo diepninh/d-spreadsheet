@@ -121,3 +121,15 @@ export const changeTextStatus = (status) =>{
         status : status,
     }
 }
+export const changeTextSizeDown = (size) =>{
+    return{
+        type : types.CHANGETEXTSIZEDOWN,
+        size : [...size],
+    }
+}
+export const changeTextSizeUp = (size) =>{
+    return{
+        type : types.CHANGETEXTSIZEUP,
+        size : [...size],
+    }
+}

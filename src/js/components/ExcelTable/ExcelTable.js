@@ -10,20 +10,52 @@ class ExcelTable extends React.Component {
     constructor(props) {
         super(props);
     }
-    ChangeTextStyleWhenHightLighted = ( newData) =>{
-       if(this.props.textStatus === "bold"){
-        let newValue = newData;
-        
-       newValue === "bold";
-            
-            this.props.changeBold(newValue);
-       }
-       else if( this.props.textStatus === "italic"){
-           this.props.changeInti(newData);
-       }
-       else if(this.props.textStatus === "normal"){
-           this.props.changeNor(newData);
-       }
+    ChangeTextStyleWhenHightLighted = (row , col) =>{
+        let oldRow = this.props.row;
+        let oldCol = this.props.col;
+        let newData = new Array()
+        for (let i = 0; i < this.props.nRows; i++) {
+            newData[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newData[i][j] = false;
+            }
+        }
+        if (this.props.keyboard === true) {
+            if (oldRow <= row) {
+                if (oldCol <= col) {
+                    for (let i = oldRow; i <= row; i++) {
+                        for (let j = oldCol; j <= col; j++) {
+                            newData[i][j] = this.props.textStatus;
+                        }
+                    }
+                }
+                else {
+                    for (let i = oldRow; i <= row; i++) {
+                        for (let j = col; j <= oldCol; j++) {
+                            newData[i][j] = this.props.textStatus;
+                        }
+                    }
+                }
+            }
+            else if (oldRow > row) {
+                if (oldCol <= col) {
+                    for (let i = row; i <= oldRow; i++) {
+                        for (let j = oldCol; j <= col; j++) {
+                            newData[i][j] = this.props.textStatus;
+                        }
+                    }
+                }
+                else {
+                    for (let i = row; i <= oldRow; i++) {
+                        for (let j = col; j <= oldCol; j++) {
+                            newData[i][j] = this.props.textStatus;
+                        }
+                    }
+                }
+            }
+
+            this.props.changeBold(newData);
+        }
     }
     HightLighted = (row, col) => {
         let oldRow = this.props.row;
@@ -70,7 +102,6 @@ class ExcelTable extends React.Component {
             }
 
             this.props.selectedCell(newData);
-            this.ChangeTextStyleWhenHightLighted(newData);
         }
         else {
             for (let i = 0; i < (this.props.nRows); i++) {
@@ -86,6 +117,7 @@ class ExcelTable extends React.Component {
         this.HightLighted(row, col);
         this.props.getPosition(row, col);
         this.props.checkPointer(true);
+        this.ChangeTextStyleWhenHightLighted(row,col);
     }
     EventKeyBoardChangeValue = (row, col) => {
         this.props.showInput(false);

@@ -43,8 +43,27 @@ class Extentions extends React.Component {
         this.props.changeNor(newValue);
         this.props.changeTextStatus("normal");
     }
-    GetStyleText = (row, col) => {
-
+    sizeDown = () =>{
+        let newValue = new Array();
+        for (let i = 0; i < this.props.nRows; i++) {
+            newValue[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newValue[i][j] = this.props.sizeText[i][j];
+            }
+        }
+        newValue[this.props.row][this.props.col] = this.props.sizeText[this.props.row][this.props.col]-1;
+        this.props.changeSizeTextDown(newValue);
+     }
+    sizeUp = () =>{
+        let newValue = new Array();
+        for (let i = 0; i < this.props.nRows; i++) {
+            newValue[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newValue[i][j] = this.props.sizeText[i][j];
+            }
+        }
+        newValue[this.props.row][this.props.col] = this.props.sizeText[this.props.row][this.props.col]+1;
+        this.props.changeSizeTextUp(newValue);
     }
     render() {
         return (
@@ -53,7 +72,7 @@ class Extentions extends React.Component {
                     <button onClick={this.changeBoldText} className="customButton" style={{ fontWeight: "bold" }} >B</button>
                     <button onClick={this.changeIntiText} className="customButton" style={{ fontStyle: "italic", fontFamily: "fantasy" }}>I</button>
                     <button onClick={this.changeNorText} className="customButton">N</button>
-                    <div>
+                    {/* <div>
                         <form onSubmit={this.handleSubmit} >
                             <label>
 
@@ -69,6 +88,12 @@ class Extentions extends React.Component {
                                 </select>
                             </label>
                         </form>
+                    </div> */}
+                    <div style={{height : 35 , background: "#cccccc" ,width :1}}></div>
+                    <div className="formSizeText">
+                        <button onClick ={this.sizeDown} className="customButton2">-</button>
+                        <p className="formSizeNumber"  >{this.props.sizeText[this.props.row][this.props.col]}</p>
+                        <button onClick ={this.sizeUp} className = "customButton2">+</button>
                     </div>
                 </div>
 
@@ -86,6 +111,7 @@ const mapStateToProps = (state) => {
         col: state.excel.col,
         row: state.excel.row,
         textStatus: state.excel.textStatus,
+        sizeText : state.excel.sizeText,
     }
 }
 const mapDispacthToProps = (dispatch, props) => {
@@ -101,6 +127,12 @@ const mapDispacthToProps = (dispatch, props) => {
         },
         changeTextStatus: (status) => {
             dispatch(actions.changeTextStatus(status))
+        },
+        changeSizeTextDown : (size) =>{
+            dispatch(actions.changeTextSizeDown(size))
+        },
+        changeSizeTextUp : (size) =>{
+            dispatch(actions.changeTextSizeUp(size))
         },
     }
 }

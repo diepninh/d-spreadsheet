@@ -38,6 +38,14 @@ for (let i = 0; i < nRows; i++) {
         styleText[i][j] = "normal"
     }
 }
+let sizeText = new Array()
+for (let i = 0; i < nRows; i++) {
+
+    sizeText[i] = new Array()
+    for (let j = 0; j < nColumns; j++) {
+        sizeText[i][j] = 15
+    }
+}
 
 const initalState = {
     dataTable: arrExcel,
@@ -64,6 +72,7 @@ const initalState = {
     colSize: 4,
     styleText : styleText,
     textStatus : "",
+    sizeText : sizeText
 }
 const myReducer = (state = initalState, action) => {
     switch (action.type) {
@@ -127,6 +136,12 @@ const myReducer = (state = initalState, action) => {
             return { ...state };
         case types.CHANGETEXTSTATUS:
             state.textStatus = action.status;
+            return {...state};
+        case types.CHANGETEXTSIZEDOWN:
+            state.sizeText = [...action.size];
+            return {...state};
+        case types.CHANGETEXTSIZEUP:
+            state.sizeText = [...action.size];
             return {...state};
         default:
             return state;

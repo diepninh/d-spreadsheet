@@ -36,7 +36,7 @@ class GridTable extends React.Component {
                                     >
                                         <div className="styleText" style={{width: col === this.props.colSize ? this.props.width : this.props.widthA  ,
                                             height: row === this.props.rowSize ? this.props.height : this.props.heightA  , textAlign: "center"}}>
-                                            <div style={{ fontWeight : this.props.styleText[row][col] , fontStyle : this.props.styleText[row][col]}}>
+                                            <div style={{ fontWeight : this.props.styleText[row][col] , fontStyle : this.props.styleText[row][col], fontSize : this.props.sizeText[row][col]}}>
                                                 {el}</div>
                                         </div>
 
@@ -68,6 +68,7 @@ const mapStateToProps = (state) => {
         col : state.excel.col,
         row : state.excel.row,
         styleText : state.excel.styleText,
+        sizeText : state.excel.sizeText,
     }
 }
 const mapDispacthToProps = (dispatch, props) => {
