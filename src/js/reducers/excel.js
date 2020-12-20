@@ -6,7 +6,7 @@ let arrExcel = new Array()
 for (let i = 0; i < nRows; i++) {
     arrExcel[i] = new Array()
     for (let j = 0; j < nColumns; j++) {
-        arrExcel[i][j] = "";
+        arrExcel[i][j] = " ";
     }
 }
 
@@ -46,6 +46,19 @@ for (let i = 0; i < nRows; i++) {
         sizeText[i][j] = 15
     }
 }
+let colorText = new Array()
+for (let i = 0; i < nRows; i++) {
+
+    colorText[i] = new Array()
+    for (let j = 0; j < nColumns; j++) {
+        colorText[i][j] = {
+        r: '0',
+        g: '0',
+        b: '0',
+        a: '100',
+      }
+    }
+}
 
 const initalState = {
     dataTable: arrExcel,
@@ -72,7 +85,11 @@ const initalState = {
     colSize: 4,
     styleText : styleText,
     textStatus : "",
-    sizeText : sizeText
+    sizeText : sizeText,
+    ColorBoard : false,
+    color :colorText,
+    copiedTable : tempTable,
+    dataCopied : '',
 }
 const myReducer = (state = initalState, action) => {
     switch (action.type) {
@@ -143,6 +160,18 @@ const myReducer = (state = initalState, action) => {
         case types.CHANGETEXTSIZEUP:
             state.sizeText = [...action.size];
             return {...state};
+        case types.COLORBOARD:
+            state.ColorBoard = !state.ColorBoard;
+            return {...state};
+        case types.CHANGECOLOR:
+            state.color = [...action.color];
+            return {...state};
+        case types.COPY:
+            state.copiedTable = [...action.newValue];
+            return {...state};
+        case types.CHANGEDATACOPIED:
+            state.dataCopied = action.data;
+            return{...state};
         default:
             return state;
     }

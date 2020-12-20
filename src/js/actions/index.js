@@ -133,3 +133,27 @@ export const changeTextSizeUp = (size) =>{
         size : [...size],
     }
 }
+export const ColorBoard = () =>{
+    return{
+        type : types.COLORBOARD,
+        
+    }
+}
+export const changeColor = (color) =>{
+    return{
+        type : types.CHANGECOLOR,
+        color : [...color],
+    }
+}
+export const copyData = (newValue) =>{
+    return{
+        type : types.COPY,
+        newValue : [...newValue],
+    }
+}
+export const changeDataCopied = (data) =>{
+    return{
+        type :  types.CHANGEDATACOPIED,
+        data : data,
+    }
+}

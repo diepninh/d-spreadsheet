@@ -29,14 +29,18 @@ class GridTable extends React.Component {
                                     <div className={this.props.selectedTable[row][col] === true ? "grid-item grid-item-selected" : "grid-item"} key={col.toString()}
                                         style={{
                                             width: col === this.props.colSize ? this.props.width : this.props.widthA  ,
-                                            height: row === this.props.rowSize ? this.props.height : this.props.heightA  
+                                            height: row === this.props.rowSize ? this.props.height : this.props.heightA,
+                                            border : this.props.copiedTable[row][col] === true ? "1px dashed blue" : "1px solid #eee"
                                         }}
 
                                         onClick={() => this.GetPosition(row, col)}
                                     >
-                                        <div className="styleText" style={{width: col === this.props.colSize ? this.props.width : this.props.widthA  ,
-                                            height: row === this.props.rowSize ? this.props.height : this.props.heightA  , textAlign: "center"}}>
-                                            <div style={{ fontWeight : this.props.styleText[row][col] , fontStyle : this.props.styleText[row][col], fontSize : this.props.sizeText[row][col]}}>
+                                        <div className="styleText" style={{maxWidth:col === this.props.colSize ? this.props.width : this.props.widthA , background :" ",
+                                            maxHeight: row === this.props.rowSize ? this.props.height : this.props.heightA  , textAlign: "center"}}>
+                                            <div style={{ fontWeight : this.props.styleText[row][col] , fontStyle : this.props.styleText[row][col], fontSize : this.props.sizeText[row][col], 
+                                                color : `rgba(${this.props.color[row][col].r}, ${this.props.color[row][col].g}, ${this.props.color[row][col].b}, ${this.props.color[row][col].a})`,
+                                                 
+                                                }}>
                                                 {el}</div>
                                         </div>
 
@@ -69,6 +73,8 @@ const mapStateToProps = (state) => {
         row : state.excel.row,
         styleText : state.excel.styleText,
         sizeText : state.excel.sizeText,
+        color : state.excel.color,
+        copiedTable : state.excel.copiedTable,
     }
 }
 const mapDispacthToProps = (dispatch, props) => {

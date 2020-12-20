@@ -22,7 +22,7 @@
 }
 .formSizeText{
     background-color: none;
-    width: 100px;
+    width: 160px;
     border: none;
     display: flex;
 }
@@ -43,3 +43,20 @@
     margin-left: 20px;
     font-size: 15px;
 }
+
+.formSelect{
+    background-color: whitesmoke;
+    border: none;
+    margin-left: 20px;
+    margin-top: 8px;
+    font-size: 15px;
+    color: gray;
+}
+ .inputAll{
+     outline: none;
+     border: none;
+     margin-left: 10px;
+     font-size: 15px;
+     width: 100%;
+ }
+ 

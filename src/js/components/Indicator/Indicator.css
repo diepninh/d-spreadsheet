@@ -1,6 +1,7 @@
 .containIn{
     cursor: cell;
     position: absolute;
+    z-index: 1;
 }
 .containIn > div, .containIn > div > input {
     position: absolute;

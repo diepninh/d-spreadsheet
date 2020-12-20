@@ -10,7 +10,7 @@ class ExcelTable extends React.Component {
     constructor(props) {
         super(props);
     }
-    ChangeTextStyleWhenHightLighted = (row , col) =>{
+    ChangeTextStyleWhenHightLighted = (row, col) => {
         let oldRow = this.props.row;
         let oldCol = this.props.col;
         let newData = new Array()
@@ -117,7 +117,7 @@ class ExcelTable extends React.Component {
         this.HightLighted(row, col);
         this.props.getPosition(row, col);
         this.props.checkPointer(true);
-        this.ChangeTextStyleWhenHightLighted(row,col);
+        this.ChangeTextStyleWhenHightLighted(row, col);
     }
     EventKeyBoardChangeValue = (row, col) => {
         this.props.showInput(false);
@@ -189,9 +189,50 @@ class ExcelTable extends React.Component {
             this.props.checkPointer(true);
             this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
         }
-        else {
-
+        else if (event.ctrlKey && event.keyCode === 67) {
+            let newValue = new Array();
+            for (let i = 0; i < this.props.nRows; i++) {
+                newValue[i] = new Array()
+                for (let j = 0; j < this.props.nColumns; j++) {
+                    newValue[i][j] = this.props.copiedTable[i][j];
+                }
+            }
+            for (let i = 0; i < this.props.nRows; i++) {
+                for (let j = 0; j < this.props.nColumns; j++) {
+                   if(i=== this.props.row && j ===this.props.col){
+                       newValue[i][j] = true;
+                   }else{
+                       newValue[i][j] = false;
+                   }
+                }
+                
+            }
+            
+            this.props.copyData(newValue);
+            this.props.changeDataCopied(this.props.dataTable[this.props.row][this.props.col])
         }
+        else if (event.ctrlKey && event.keyCode === 86){
+            let newValue = new Array();
+            for (let i = 0; i < this.props.nRows; i++) {
+                newValue[i] = new Array()
+                for (let j = 0; j < this.props.nColumns; j++) {
+                    newValue[i][j] = false;
+                }
+            }
+            let newData = new Array();
+            for (let i = 0; i < this.props.nRows; i++) {
+                newData[i] = new Array()
+                for (let j = 0; j < this.props.nColumns; j++) {
+                    // newData[i][j] = this.props.dataTable[i][j];
+                    newData[i][j] === "1";
+                }
+            }
+             
+            this.props.setValue(newData);
+            console.log(this.props.dataTable[this.props.row][this.props.col])
+            this.props.copyData(newValue);
+        }
+
     }
     handleUp = (event) => {
         this.props.changeKeyboard(false)
@@ -319,7 +360,9 @@ const mapStateToProps = (state) => {
         value: state.excel.value,
         heightCol: state.excel.heightCol,
         width: state.excel.widthCell,
-        textStatus : state.excel.textStatus,
+        textStatus: state.excel.textStatus,
+        copiedTable: state.excel.copiedTable,
+        dataCopied : state.excel.dataCopied,
     }
 }
 const mapDispatchToProps = (dispatch, props) => {
@@ -367,14 +410,20 @@ const mapDispatchToProps = (dispatch, props) => {
         changeValueFlag: (value) => {
             dispatch(actions.changeValueFlag(value))
         },
-        changeBold: (style) =>{
+        changeBold: (style) => {
             dispatch(actions.changeBold(style))
         },
-        changeInti : (style) =>{
+        changeInti: (style) => {
             dispatch(actions.changeIntinate(style))
         },
-        changeNor : (style) =>{
+        changeNor: (style) => {
             dispatch(actions.changeNormal(style))
+        },
+        copyData: (newValue) => {
+            dispatch(actions.copyData(newValue))
+        },
+        changeDataCopied: (data) =>{
+            dispatch(actions.changeDataCopied(data))
         },
 
     }
