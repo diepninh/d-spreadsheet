@@ -13,7 +13,8 @@
 }
 .styleText{
     text-align: center;
-    /* margin-top: 18px; */
+    margin-top: 18px;
+    margin-left: 80px;
     position: absolute;
 } 
  

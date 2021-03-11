@@ -27,13 +27,15 @@ class Indicator extends React.Component {
                 newValue[i][j] = this.props.dataTable[i][j];
             }
         }
+       
         if (this.props.valueFlag[0] != '=') {
             newValue[this.props.row][this.props.col] = this.props.valueFlag;
         }
         else {
             if (this.props.valueFlag.length === 1) {
                 newValue[this.props.row][this.props.col] = '';
-            } else if(this.props.valueFlag[1] > 'a' && this.props.valueFlag[1] < 'z'||this.props.valueFlag[1] > 'A' && this.props.valueFlag[1] < 'Z') {
+            } 
+            else if(this.props.valueFlag[1] > 'a' && this.props.valueFlag[1] < 'z'||this.props.valueFlag[1] > 'A' && this.props.valueFlag[1] < 'Z') {
                 for (let i = 0; i < this.props.valueFlag.length; i++) {
                     for(let j = 1 ;j< this.props.valueFlag.length;j++){
                         if (this.props.valueFlag[i] > 'a' && this.props.valueFlag[i] < 'z'||this.props.valueFlag[i] > 'A' && this.props.valueFlag[i] < 'Z') {
@@ -46,7 +48,7 @@ class Indicator extends React.Component {
                         }
                     }
                 }
-
+                console.log(true);
             }
             else if(this.props.valueFlag[1] >= 0 && this.props.valueFlag[1] <=9){
                 newValue[this.props.row][this.props.col] = require("../../../calculator").parse(this.props.valueFlag.slice(1));
@@ -55,14 +57,16 @@ class Indicator extends React.Component {
 
         }
         this.props.setValue(newValue)
+      
         event.preventDefault();
 
     }
     ChangeValue = (value) => {
+      if(value[0] === ' '){
+        this.props.showValue(value.slice(1));
+      }else{
         this.props.showValue(value);
-    }
-    componentDidMount() {
-        this.DataInput.current.focus();
+      }
     }
 
     render() {
@@ -79,10 +83,10 @@ class Indicator extends React.Component {
                 <div>
                     <form onSubmit={(event) => this.SubmitForm(event)}>
                         <input type="text" value={this.props.valueFlag}
-                            ref={this.DataInput}
                             className={this.props.showInputFlag ? "displayInput" : "displayNoInput"}
-                            style={{ width: this.props.width - 10, height: this.props.height - 10, fontSize: 15 }}
+                            style={{ width: this.props.width - 10, height: this.props.height - 10, fontSize: 15 , background : this.props.backGround, textAlign: 'center'}}
                             onChange={(event) => this.ChangeValue(event.target.value)}
+                         
                         />
                     </form>
                 </div>

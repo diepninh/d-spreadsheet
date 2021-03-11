@@ -35,11 +35,11 @@ class GridTable extends React.Component {
 
                                         onClick={() => this.GetPosition(row, col)}
                                     >
-                                        <div className="styleText" style={{maxWidth:col === this.props.colSize ? this.props.width : this.props.widthA , background :"pink",
+                                        <div className="styleText" style={{maxWidth:col === this.props.colSize ? this.props.width : this.props.widthA ,  
                                             maxHeight: row === this.props.rowSize ? this.props.height : this.props.heightA  , textAlign: "center"}}>
                                             <div style={{ fontWeight : this.props.styleText[row][col] , fontStyle : this.props.styleText[row][col], fontSize : this.props.sizeText[row][col], 
                                                 color : `rgba(${this.props.color[row][col].r}, ${this.props.color[row][col].g}, ${this.props.color[row][col].b}, ${this.props.color[row][col].a})`,
-                                                 
+                                                 fontFamily : 'monospace'
                                                 }}>
                                                 {el}</div>
                                         </div>
