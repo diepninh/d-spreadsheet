@@ -157,3 +157,31 @@ export const changeDataCopied = (data) =>{
     data : data,
   };
 };
+export const changeFontFamily = (font) =>{
+  return{
+    type : types.CHANGEFONTFAMILY,
+    font : font
+  }
+}
+export const  fillColorBoard = () =>{
+  return{
+    type : types.FILLCOLORBOARD,
+        
+  };
+}
+export const changeBackground = (color) =>{
+  return{
+    type : types.CHANGEBACKGROUND,
+    color : [...color],
+  }
+}
+export const addRow = () => {
+  return{
+    type : types.ADDROW,
+  }
+}
+export const addCol = () => {
+  return{
+    type : types.ADDCOL,
+  }
+}

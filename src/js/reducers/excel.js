@@ -1,17 +1,16 @@
 import * as types from '../constaints/Actiontypes';
-let nRows = 18;
-let nColumns = 10;
+let nRows = 28;
+let nColumns = 16;
 let arrExcel = new Array();
-
 for (let i = 0; i < nRows; i++) {
+
   arrExcel[i] = new Array();
   for (let j = 0; j < nColumns; j++) {
     arrExcel[i][j] = '';
   }
 }
-
 let ColTable = new Array();
-let DataChar = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N'];
+let DataChar = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 for (let i = 0; i < nColumns; i++) {
   ColTable[i] = DataChar[i];
 }
@@ -59,13 +58,21 @@ for (let i = 0; i < nRows; i++) {
     };
   }
 }
+let backgroundGrid = new Array();
+for (let i = 0; i < nRows; i++) {
+
+  backgroundGrid[i] = new Array();
+  for (let j = 0; j < nColumns; j++) {
+    backgroundGrid[i][j] = 'none';
+  }
+}
 
 const initalState = {
   dataTable: arrExcel,
   row: 1,
   col: 1,
-  widthCell: 180,
-  heightCell: 50,
+  widthCell: 103,
+  heightCell: 30,
   nRows: nRows,
   nColumns: nColumns,
   ColTable: ColTable,
@@ -79,15 +86,17 @@ const initalState = {
   pointer: true,
   heitghtIndicator: 1,
   widthIndicator: 1,
-  widthA: 180,
-  heightA: 50,
-  rowSize: 3,
-  colSize: 4,
+  widthA: 103,
+  heightA: 30,
+  rowSize: '',
+  colSize: '',
   styleText: styleText,
   textStatus: '',
   sizeText: sizeText,
   ColorBoard: false,
+  FillColorBoard: false,
   color: colorText,
+  backgroundGrid: backgroundGrid,
   copiedTable: tempTable,
   dataCopied: '',
 };
@@ -163,8 +172,14 @@ const myReducer = (state = initalState, action) => {
     case types.COLORBOARD:
       state.ColorBoard = !state.ColorBoard;
       return { ...state };
+    case types.FILLCOLORBOARD:
+      state.FillColorBoard = !state.FillColorBoard;
+      return { ...state };
     case types.CHANGECOLOR:
       state.color = [...action.color];
+      return { ...state };
+    case types.CHANGEBACKGROUND:
+      state.backgroundGrid = [...action.color];
       return { ...state };
     case types.COPY:
       state.copiedTable = [...action.newValue];
@@ -172,6 +187,12 @@ const myReducer = (state = initalState, action) => {
     case types.CHANGEDATACOPIED:
       state.dataCopied = action.data;
       return { ...state };
+    case types.ADDROW:
+      state.nRows = state.nRows +1 ;
+      return {...state};
+    case types.ADDCOL:
+      state.nColumns = state.nColumns + 1;
+      return {...state};
     default:
       return state;
   }

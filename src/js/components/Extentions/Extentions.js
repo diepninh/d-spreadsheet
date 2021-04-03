@@ -2,10 +2,10 @@ import React from 'react';
 import './Extentions.css'
 import { connect } from 'react-redux';
 import * as actions from '../../actions/index';
-import { SketchPicker } from 'react-color';
-import { AiOutlinePicRight } from 'react-icons/ai';
-import { AiOutlinePicCenter } from 'react-icons/ai';
-import { AiOutlinePicLeft } from 'react-icons/ai';
+import { SketchPicker, GithubPicker } from 'react-color';
+import { BsTextCenter, BsTextLeft, BsTextRight } from 'react-icons/bs';
+import fillColor from '../Image/fill-color-40.png';
+
 class Extentions extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +20,7 @@ class Extentions extends React.Component {
     }
     return newValue;
   }
-  initArrayAndChange = (form ,arrayCorres) => {
+  initArrayAndChange = (form, arrayCorres) => {
     let newValue = this.initArray(arrayCorres);
     newValue[this.props.row][this.props.col] = form;
     this.props.changeBold(newValue);
@@ -45,13 +45,26 @@ class Extentions extends React.Component {
     newValue[this.props.row][this.props.col] = this.props.sizeText[this.props.row][this.props.col] + 1;
     this.props.changeSizeTextUp(newValue);
   }
+  changeFontFamily = (value) => {
+    let newValue = this.initArray(this.props.fontFamily);
+    newValue[this.props.row][this.props.col] = value;
+    this.props.changeFontFamily(newValue);
+  }
   openColorBoard = () => {
     this.props.openColorBoard();
+  }
+  openFillColorBoard = () => {
+    this.props.openFillColorBoard();
   }
   handleChangeColor = (color) => {
     let newValue = this.initArray(this.props.styleText);
     newValue[this.props.row][this.props.col] = color.rgb;
     this.props.changeColor(newValue);
+  }
+  handleChangeBackGround = (color) => {
+    let newValue = this.initArray(this.props.backgroundGrid);
+    newValue[this.props.row][this.props.col] = color.hex;
+    this.props.changeBackgroundGrid(newValue);
   }
   ChangeValueAll = (value) => {
     if (value[0] === ' ') {
@@ -90,6 +103,7 @@ class Extentions extends React.Component {
     this.props.setValue(newValue);
     event.preventDefault();
   }
+
   render() {
     return (
       <div className="Extentions toolBar">
@@ -109,15 +123,11 @@ class Extentions extends React.Component {
             <form onSubmit={this.handleSubmit} >
               <label>
 
-                <select className="formSelect" >
-                  <option value="Times New Roman" >Times New Roman</option>
-                  <option value="Georgia">Georgia</option>
-                  <option value="Palatino Linnotype" >Palatino Linnotype</option>
-                  <option value="Book Antiqua" >Book Antiqua</option>
-                  <option value="Arial" >Arial</option>
-                  <option value="Helvertica">Helvetica</option>
-                  <option value="Impact">Impact</option>
-                  <option value="Tahoma">Tahoma</option>
+                <select className="formSelect" value={this.props.fontFamily[this.props.row][this.props.col]} onChange={e => this.changeFontFamily(e.target.value)}>
+                  <option value="'Times New Roman', Times, serif" >Times New Roman</option>
+                  <option value=" Georgia, 'Times New Roman', Times, serif">Georgia</option>
+                  <option value="Arial, Helvetica, sans-serif" >Arial</option>
+                  <option value="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif">Impact</option>
                 </select>
               </label>
             </form>
@@ -128,19 +138,31 @@ class Extentions extends React.Component {
               onClick={this.openColorBoard}></button>
             {this.props.ColorBoard === true ?
               <div style={{ position: "absolute", zIndex: 2 }}>
-                <SketchPicker color={this.props.color[this.props.row][this.props.col]} onChange={this.handleChangeColor} />
+                <SketchPicker color={`rgba(${this.props.color[this.props.row][this.props.col].r}, ${this.props.color[this.props.row][this.props.col].g}, ${this.props.color[this.props.row][this.props.col].b}, ${this.props.color[this.props.row][this.props.col].a})`}
+                  onChange={this.handleChangeColor} />
               </div> :
               null}
           </div>
           <div style={{ height: 35, background: "#cccccc", width: 1, marginRight: 20, marginLeft: 20 }}></div>
-          <AiOutlinePicRight className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
-          <AiOutlinePicCenter className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
-          <AiOutlinePicLeft className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
+          <div >
+            <img src={fillColor} width={20} height={20}  onClick={this.openFillColorBoard}/>
+            <div style={{ width: 20, height: 5, background: this.props.backgroundGrid[this.props.row][this.props.col] }}></div>
+            {this.props.FillColorBoard === true ?
+              <div style={{ position: "absolute", zIndex: 2 }}>
+                <GithubPicker color={this.props.backgroundGrid[this.props.row][this.props.col]} onChange={this.handleChangeBackGround}/>
+              </div> :
+              null}
+          </div>
+          <div style={{ height: 35, background: "#cccccc", width: 1, marginRight: 20, marginLeft: 20 }}></div>
+          <BsTextLeft className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
+          <BsTextCenter className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
+          <BsTextRight className="iconPosition" size="30" color="gray" style={{ marginTop: 3, marginRight: 10 }} />
         </div>
 
 
         <div className="formInput" style={{ display: "flex", }}  >
           <p style={{ color: "#ccc ", fontSize: 28, marginTop: 2, fontFamily: "cursive", fontStyle: "italic", marginLeft: 25 }}>fx</p>
+          <p>{this.props.ColTable[this.props.col]}{this.props.row}</p>
           <div style={{ height: 35, background: "#cccccc", width: 2, marginLeft: 4 }}></div>
           <form style={{ marginTop: 5, fontSize: 15, width: "100%" }} onSubmit={(event) => this.SubmitFormAll(event)}>
             <input type="text" className="inputAll" value={this.props.valueFlag} onChange={(event) => this.ChangeValueAll(event.target.value)} />
@@ -164,6 +186,10 @@ const mapStateToProps = (state) => {
     color: state.excel.color,
     valueFlag: state.excel.value,
     dataTable: state.excel.dataTable,
+    fontFamily: state.optionsFontFamily.fontFamily,
+    FillColorBoard: state.excel.FillColorBoard,
+    backgroundGrid: state.excel.backgroundGrid,
+     ColTable: state.excel.ColTable,
   }
 }
 const mapDispacthToProps = (dispatch, props) => {
@@ -189,6 +215,9 @@ const mapDispacthToProps = (dispatch, props) => {
     openColorBoard: () => {
       dispatch(actions.ColorBoard())
     },
+    openFillColorBoard: () => {
+      dispatch(actions.fillColorBoard())
+    },
     changeColor: (color) => {
       dispatch(actions.changeColor(color))
     },
@@ -198,7 +227,12 @@ const mapDispacthToProps = (dispatch, props) => {
     setValue: (newValue) => {
       dispatch(actions.setValue(newValue))
     },
-
+    changeFontFamily: (font) => {
+      dispatch(actions.changeFontFamily(font))
+    },
+    changeBackgroundGrid: (color) => {
+      dispatch(actions.changeBackground(color))
+    }
   }
 }
 export default connect(mapStateToProps, mapDispacthToProps)(Extentions);

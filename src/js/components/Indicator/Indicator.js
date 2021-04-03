@@ -15,6 +15,15 @@ class Indicator extends React.Component {
     showInput = () => {
         this.props.showInput(true);
         this.props.showValue(this.props.dataTable[this.props.row][this.props.col]);
+        let newValue = new Array();
+        for (let i = 0; i < this.props.nRows; i++) {
+            newValue[i] = new Array()
+            for (let j = 0; j < this.props.nColumns; j++) {
+                newValue[i][j] = this.props.dataTable[i][j];
+            }
+        }
+        newValue[this.props.row][this.props.col] = '';
+        this.props.setValue(newValue);
         this.props.checkPointer(false);
     }
     SubmitForm = (event) => {
@@ -77,7 +86,7 @@ class Indicator extends React.Component {
                     height: this.props.row === this.props.rowSize ? this.props.height : this.props.heightA
                     , background: this.props.backGround
                     , left: this.props.col >= this.props.colSize + 1 ? ((this.props.col - 1) * (this.props.widthA + 2)) + this.props.width + this.props.widthRow : (this.props.col * (this.props.widthA + 2)) + this.props.widthRow,
-                    top: this.props.row >= this.props.rowSize + 1 ? ((this.props.row - 1) * (this.props.heightA + 2)) + this.props.height + this.props.heightCol+70 : (this.props.row * (this.props.heightA + 2)) + this.props.heightCol+70, border: this.props.border
+                    top: this.props.row >= this.props.rowSize + 1 ? ((this.props.row - 1) * (this.props.heightA + 2)) + this.props.height + this.props.heightCol+72 : (this.props.row * (this.props.heightA + 2)) + this.props.heightCol+72, border: this.props.border
                 }}
             >
                 <div>
@@ -85,15 +94,10 @@ class Indicator extends React.Component {
                         <input type="text" value={this.props.valueFlag}
                             className={this.props.showInputFlag ? "displayInput" : "displayNoInput"}
                             style={{ width: this.props.width - 10, height: this.props.height - 10, fontSize: 15 , background : this.props.backGround, textAlign: 'center'}}
-                            onChange={(event) => this.ChangeValue(event.target.value)}
-                         
-                        />
+                            onChange={(event) => this.ChangeValue(event.target.value)} autoFocus />
                     </form>
                 </div>
-                <div className={this.props.pointer === true ? "pointer" : "pointerNone"}
-
-                >
-                </div>
+                <div className={this.props.pointer === true ? "pointer" : "pointerNone"}></div>
 
             </div>
         )
@@ -119,7 +123,7 @@ const mapStateToProps = (state) => {
         colSize: state.excel.colSize,
     }
 }
-const mapDispatchProps = (dispatch, props) => {
+const mapDispatchProps = (dispatch) => {
     return {
         showInput: (status) => {
             dispatch(actions.showInput(status))

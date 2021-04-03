@@ -6,6 +6,7 @@ import RowNumber from '../RowNumber/RowNumber.js'
 import { connect } from 'react-redux';
 import * as actions from '../../actions/index';
 import Extentions from '../Extentions/Extentions.js';
+import MediaQuery from 'react-responsive';
 import 'lodash';
 class ExcelTable extends React.Component {
   constructor(props) {
@@ -257,9 +258,8 @@ class ExcelTable extends React.Component {
   render() {
     return (
       <div className='ExcelTable'>
-
-        <Extentions />
-
+        <Extentions/>
+        <div style={{height : 71}}></div>
         <div  >
           <div style={{ display: 'flex', width: this.props.width * (this.props.nColumns + 1) + this.props.widthRow }}>
             <div style={{
@@ -272,10 +272,11 @@ class ExcelTable extends React.Component {
           </div>
           <div style={{ display: "flex" }}>
             <RowNumber />
+            <div style ={{ width : 50}}></div>
             <GridTable ChangePosition={this.ChangeIndicatorPosition} EventKeyBoardChangeValue={this.EventKeyBoardChangeValue} />
-            <Indicator backGround={"none"} border={"2px solid blue"} />
-
+            <Indicator backGround={"none"} border={"2px solid #1A73E8"} />
           </div>
+
         </div>
       </div>
     )
