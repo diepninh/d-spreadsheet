@@ -1,13 +1,13 @@
-import React from 'react'
-import GridTable from '../GridTable/GridTable.js'
-import Indicator from '../Indicator/Indicator.js'
-import ColWord from '../ColWord/ColWord.js'
-import RowNumber from '../RowNumber/RowNumber.js'
-import { connect } from 'react-redux';
-import * as actions from '../../actions/index';
-import Extentions from '../Extentions/Extentions.js';
-import MediaQuery from 'react-responsive';
-import 'lodash';
+import React from "react";
+import GridTable from "../GridTable/GridTable.js";
+import Indicator from "../Indicator/Indicator.js";
+import ColWord from "../ColWord/ColWord.js";
+import RowNumber from "../RowNumber/RowNumber.js";
+import { connect } from "react-redux";
+import * as actions from "../../actions/index";
+import Extentions from "../Extentions/Extentions.js";
+import MediaQuery from "react-responsive";
+import "lodash";
 class ExcelTable extends React.Component {
   constructor(props) {
     super(props);
@@ -15,11 +15,11 @@ class ExcelTable extends React.Component {
   ChangeTextStyleWhenHightLighted = (row, col) => {
     let oldRow = this.props.row;
     let oldCol = this.props.col;
-    let newData = new Array()
+    let newData = new Array();
     for (let i = 0; i < this.props.nRows; i++) {
-      newData[i] = new Array()
+      newData[i] = new Array();
       for (let j = 0; j < this.props.nColumns; j++) {
-        newData[i][j] === false  
+        newData[i][j] === false;
       }
     }
     if (this.props.keyboard === true) {
@@ -30,24 +30,21 @@ class ExcelTable extends React.Component {
               newData[i][j] = this.props.textStatus;
             }
           }
-        }
-        else {
+        } else {
           for (let i = oldRow; i <= row; i++) {
             for (let j = col; j <= oldCol; j++) {
               newData[i][j] = this.props.textStatus;
             }
           }
         }
-      }
-      else if (oldRow > row) {
+      } else if (oldRow > row) {
         if (oldCol <= col) {
           for (let i = row; i <= oldRow; i++) {
             for (let j = oldCol; j <= col; j++) {
               newData[i][j] = this.props.textStatus;
             }
           }
-        }
-        else {
+        } else {
           for (let i = row; i <= oldRow; i++) {
             for (let j = col; j <= oldCol; j++) {
               newData[i][j] = this.props.textStatus;
@@ -58,13 +55,13 @@ class ExcelTable extends React.Component {
 
       this.props.changeBold(newData);
     }
-  }
+  };
   HightLighted = (row, col) => {
     let oldRow = this.props.row;
     let oldCol = this.props.col;
-    let newData = new Array()
+    let newData = new Array();
     for (let i = 0; i < this.props.nRows; i++) {
-      newData[i] = new Array()
+      newData[i] = new Array();
       for (let j = 0; j < this.props.nColumns; j++) {
         newData[i][j] = false;
       }
@@ -77,24 +74,21 @@ class ExcelTable extends React.Component {
               newData[i][j] = true;
             }
           }
-        }
-        else {
+        } else {
           for (let i = oldRow; i <= row; i++) {
             for (let j = col; j <= oldCol; j++) {
               newData[i][j] = true;
             }
           }
         }
-      }
-      else if (oldRow > row) {
+      } else if (oldRow > row) {
         if (oldCol <= col) {
           for (let i = row; i <= oldRow; i++) {
             for (let j = oldCol; j <= col; j++) {
               newData[i][j] = true;
             }
           }
-        }
-        else {
+        } else {
           for (let i = row; i <= oldRow; i++) {
             for (let j = col; j <= oldCol; j++) {
               newData[i][j] = true;
@@ -104,97 +98,110 @@ class ExcelTable extends React.Component {
       }
 
       this.props.selectedCell(newData);
-    }
-    else {
-      for (let i = 0; i < (this.props.nRows); i++) {
+    } else {
+      for (let i = 0; i < this.props.nRows; i++) {
         for (let j = 0; j < this.props.nColumns; j++) {
           newData[i][j] = false;
         }
       }
       this.props.selectedCell(newData);
     }
-  }
+  };
   ChangeIndicatorPosition = (row, col) => {
     this.props.showInput(false);
     this.HightLighted(row, col);
     this.props.getPosition(row, col);
     this.props.checkPointer(true);
     this.ChangeTextStyleWhenHightLighted(row, col);
-  }
+  };
   EventKeyBoardChangeValue = (row, col) => {
     this.props.showInput(false);
     this.props.checkPointer(true);
-    let newValue = new Array()
+    let newValue = new Array();
     for (let i = 0; i < this.props.nRows; i++) {
-      newValue[i] = new Array()
+      newValue[i] = new Array();
       for (let j = 0; j < this.props.nColumns; j++) {
         newValue[i][j] = this.props.dataTable[i][j];
       }
     }
-    if (this.props.value[0] != '=') {
+    if (this.props.value[0] != "=") {
       newValue[row][col] = this.props.value;
-    }
-    else {
+    } else {
       if (this.props.value.length === 1) {
-        newValue[row][col] = '';
-      } else if (this.props.value[1] > 'a' && this.props.value[1] < 'z' || this.props.value[1] > 'A' && this.props.value[1] < 'Z') {
+        newValue[row][col] = "";
+      } else if (
+        (this.props.value[1] > "a" && this.props.value[1] < "z") ||
+        (this.props.value[1] > "A" && this.props.value[1] < "Z")
+      ) {
         for (let i = 0; i < this.props.value.length; i++) {
           for (let j = 1; j < this.props.value.length; j++) {
-            if (this.props.value[i] > 'a' && this.props.value[i] < 'z' || this.props.value[i] > 'A' && this.props.value[i] < 'Z') {
-              newValue[row][col] = '#NAME?';
-            }
-            else if (this.props.value[i] === '+' || this.props.value[i] === '-' || this.props.value[i] === '*' || this.props.value[i] === '/') {
-              if (this.props.value[j] === '+') {
-                newValue[row][col] = '#ERROR!';
+            if (
+              (this.props.value[i] > "a" && this.props.value[i] < "z") ||
+              (this.props.value[i] > "A" && this.props.value[i] < "Z")
+            ) {
+              newValue[row][col] = "#NAME?";
+            } else if (
+              this.props.value[i] === "+" ||
+              this.props.value[i] === "-" ||
+              this.props.value[i] === "*" ||
+              this.props.value[i] === "/"
+            ) {
+              if (this.props.value[j] === "+") {
+                newValue[row][col] = "#ERROR!";
               }
             }
           }
         }
-      }
-      else if (this.props.value[1] >= 0 && this.props.value[1] <= 9) {
-        newValue[row][col] = require("../../../calculator").parse(this.props.value.slice(1));
+      } else if (this.props.value[1] >= 0 && this.props.value[1] <= 9) {
+        newValue[row][col] = require("../../../calculator").parse(
+          this.props.value.slice(1)
+        );
       }
     }
-    this.props.setValue(newValue)
-  }
-  
+    this.props.setValue(newValue);
+  };
 
   handleDown = (event) => {
-    let oldRow = this.props.row
-    let oldCol = this.props.col
-    if (event.key === "Shift") { this.props.changeKeyboard(true) }
-    else if (event.key === "ArrowUp" && oldRow >= 1) {
+    let oldRow = this.props.row;
+    let oldCol = this.props.col;
+    if (event.key === "Shift") {
+      this.props.changeKeyboard(true);
+    } else if (event.key === "ArrowUp" && oldRow >= 1) {
       this.props.checkKey(oldRow - 1, oldCol);
       this.EventKeyBoardChangeValue(this.props.row + 1, this.props.col);
       this.props.showInput(false);
       this.props.checkPointer(true);
-      this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
-    }
-    else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) {
+      this.props.changeValueFlag(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
+    } else if (event.key === "ArrowDown" && oldRow < this.props.nRows - 1) {
       this.props.checkKey(oldRow + 1, oldCol);
       this.EventKeyBoardChangeValue(this.props.row - 1, this.props.col);
       this.props.showInput(false);
       this.props.checkPointer(true);
-      this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
-    }
-    else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) {
+      this.props.changeValueFlag(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
+    } else if (event.key === "ArrowRight" && oldCol < this.props.nColumns - 1) {
       this.props.checkKey(oldRow, oldCol + 1);
       this.EventKeyBoardChangeValue(this.props.row, this.props.col - 1);
       this.props.showInput(false);
       this.props.checkPointer(true);
-      this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
-    }
-    else if (event.key === "ArrowLeft" && oldCol >= 1) {
+      this.props.changeValueFlag(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
+    } else if (event.key === "ArrowLeft" && oldCol >= 1) {
       this.props.checkKey(oldRow, oldCol - 1);
       this.EventKeyBoardChangeValue(this.props.row, this.props.col + 1);
       this.props.showInput(false);
       this.props.checkPointer(true);
-      this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
-    }
-    else if (event.ctrlKey && event.keyCode === 67) {
+      this.props.changeValueFlag(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
+    } else if (event.ctrlKey && event.keyCode === 67) {
       let newValue = new Array();
       for (let i = 0; i < this.props.nRows; i++) {
-        newValue[i] = new Array()
+        newValue[i] = new Array();
         for (let j = 0; j < this.props.nColumns; j++) {
           newValue[i][j] = this.props.copiedTable[i][j];
         }
@@ -207,41 +214,41 @@ class ExcelTable extends React.Component {
             newValue[i][j] = false;
           }
         }
-
       }
       this.props.copyData(newValue);
-      this.props.changeDataCopied(this.props.dataTable[this.props.row][this.props.col]);
-      
-    }
-    else if (event.ctrlKey && event.keyCode === 86) {
+      this.props.changeDataCopied(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
+    } else if (event.ctrlKey && event.keyCode === 86) {
       let newValue = new Array();
       for (let i = 0; i < this.props.nRows; i++) {
         newValue[i] = new Array();
         for (let j = 0; j < this.props.nColumns; j++) {
           newValue[i][j] = false;
         }
-      } 
+      }
       let newData = new Array();
       for (let i = 0; i < this.props.nRows; i++) {
-        newData[i] = new Array()
+        newData[i] = new Array();
         for (let j = 0; j < this.props.nColumns; j++) {
           newData[i][j] = this.props.dataTable[i][j];
         }
-      } 
+      }
       newData[this.props.row][this.props.col] = this.props.dataCopied;
       this.props.setValue(newData);
       this.props.copyData(newValue);
-      this.props.changeValueFlag(this.props.dataTable[this.props.row][this.props.col]);
+      this.props.changeValueFlag(
+        this.props.dataTable[this.props.row][this.props.col]
+      );
     }
-
-  }
+  };
   handleUp = (event) => {
-    this.props.changeKeyboard(false)
-  }
+    this.props.changeKeyboard(false);
+  };
   SelectAllCell = () => {
-    let newData = new Array()
+    let newData = new Array();
     for (let i = 0; i < this.props.nRows; i++) {
-      newData[i] = new Array()
+      newData[i] = new Array();
       for (let j = 0; j < this.props.nColumns; j++) {
         newData[i][j] = true;
       }
@@ -249,37 +256,50 @@ class ExcelTable extends React.Component {
     this.props.selectedCell(newData);
     this.props.checkPointer(false);
     this.props.getPosition(0, 0);
-  }
+  };
   componentDidMount(event) {
-
     window.addEventListener("keydown", this.handleDown);
     window.addEventListener("keyup", this.handleUp);
   }
   render() {
     return (
-      <div className='ExcelTable'>
-        <Extentions/>
-        <div style={{height : 71}}></div>
-        <div  >
-          <div style={{ display: 'flex', width: this.props.width * (this.props.nColumns + 1) + this.props.widthRow }}>
-            <div style={{
-              width: this.props.widthRow, height: this.props.heightCol,
-              backgroundColor: '#eee', borderRight: '2px solid #ccc'
+      <div className="ExcelTable">
+        <Extentions />
+        <div style={{ height: 71 }}></div>
+        <div>
+          <div
+            style={{
+              display: "flex",
+              width:
+                this.props.width * (this.props.nColumns + 1) +
+                this.props.widthRow,
             }}
+          >
+            <div
+              style={{
+                width: this.props.widthRow,
+                height: this.props.heightCol,
+                backgroundColor: "#eee",
+                borderRight: "2px solid #ccc",
+              }}
               onClick={this.SelectAllCell}
-            > </div>
+            >
+              {" "}
+            </div>
             <ColWord />
           </div>
           <div style={{ display: "flex" }}>
             <RowNumber />
-            <div style ={{ width : 50}}></div>
-            <GridTable ChangePosition={this.ChangeIndicatorPosition} EventKeyBoardChangeValue={this.EventKeyBoardChangeValue} />
+            <div style={{ width: 50 }}></div>
+            <GridTable
+              ChangePosition={this.ChangeIndicatorPosition}
+              EventKeyBoardChangeValue={this.EventKeyBoardChangeValue}
+            />
             <Indicator backGround={"none"} border={"2px solid #1A73E8"} />
           </div>
-
         </div>
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => {
@@ -299,69 +319,67 @@ const mapStateToProps = (state) => {
     textStatus: state.excel.textStatus,
     copiedTable: state.excel.copiedTable,
     dataCopied: state.excel.dataCopied,
-  }
-}
+  };
+};
 const mapDispatchToProps = (dispatch, props) => {
   return {
     getPosition: (row, col) => {
-      dispatch(actions.getPosition(row, col))
-
+      dispatch(actions.getPosition(row, col));
     },
     selectedCell: (newData) => {
-      dispatch(actions.selectedCell(newData))
+      dispatch(actions.selectedCell(newData));
     },
     checkKey: (row, col) => {
-      dispatch(actions.checkKey(row, col))
+      dispatch(actions.checkKey(row, col));
     },
     changeKeyboard: (status) => {
-      dispatch(actions.changeKeyboard(status))
+      dispatch(actions.changeKeyboard(status));
     },
     showInput: (status) => {
-      dispatch(actions.showInput(status))
+      dispatch(actions.showInput(status));
     },
     changeWidth: (value) => {
-      dispatch(actions.changeWidth(value))
+      dispatch(actions.changeWidth(value));
     },
     changeHeightCol: (value) => {
-      dispatch(actions.changeHeightCol(value))
+      dispatch(actions.changeHeightCol(value));
     },
     changeHeightCell: (value) => {
-      dispatch(actions.changeHeightCell(value))
+      dispatch(actions.changeHeightCell(value));
     },
     changeWidthCell: (value) => {
-      dispatch(actions.changeWidthCell(value))
+      dispatch(actions.changeWidthCell(value));
     },
     checkPointer: (status) => {
-      dispatch(actions.checkPointer(status))
+      dispatch(actions.checkPointer(status));
     },
     changeRow: (row) => {
-      dispatch(actions.changeRow(row))
+      dispatch(actions.changeRow(row));
     },
     changeCol: (col) => {
-      dispatch(actions.changeCol(col))
+      dispatch(actions.changeCol(col));
     },
     setValue: (newValue) => {
-      dispatch(actions.setValue(newValue))
+      dispatch(actions.setValue(newValue));
     },
     changeValueFlag: (value) => {
-      dispatch(actions.changeValueFlag(value))
+      dispatch(actions.changeValueFlag(value));
     },
     changeBold: (style) => {
-      dispatch(actions.changeBold(style))
+      dispatch(actions.changeBold(style));
     },
     changeInti: (style) => {
-      dispatch(actions.changeIntinate(style))
+      dispatch(actions.changeIntinate(style));
     },
     changeNor: (style) => {
-      dispatch(actions.changeNormal(style))
+      dispatch(actions.changeNormal(style));
     },
     copyData: (newValue) => {
-      dispatch(actions.copyData(newValue))
+      dispatch(actions.copyData(newValue));
     },
     changeDataCopied: (data) => {
-      dispatch(actions.changeDataCopied(data))
+      dispatch(actions.changeDataCopied(data));
     },
-
-  }
-}
+  };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(ExcelTable);

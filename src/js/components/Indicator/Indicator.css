@@ -32,7 +32,7 @@
 .displayNoInput{
     border: none;
     outline: none;
-    display: " ";
+    display: none;
     text-align: center;
 }
 .displayInput{

@@ -42,9 +42,6 @@ class RowNumber extends React.Component {
             })
           }
         </div>
-        <button style={{ width : this.props.widthRow , border : 'none', borderRadius :10}} onClick={() => this.props.addRow()}>
-          +
-        </button>
       </div>
 
     )

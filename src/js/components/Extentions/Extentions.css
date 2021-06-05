@@ -1,65 +1,77 @@
-.toolBar{
-     
-    height: 70px;
-    background-color: whitesmoke;
-    width: 100%;
-    position: fixed;
-    z-index: 2;
+.toolBar {
+  height: 70px;
+  background-color: whitesmoke;
+  width: 100%;
+  position: fixed;
+  z-index: 2;
 }
 
-.formInput{
-    height: 35px;
-    background-color: white;
+.formInput {
+  height: 35px;
+  background-color: white;
 }
-.extentions{
-    height: 35px;
-    display: flex;
+.extentions {
+  height: 35px;
+  display: flex;
 }
-.customButton{
-    background-color: none;
-    border: none;
-    width: 40px;
-    height: 35px;
-    font-size: 18px;
-    color: gray;
+.customButton {
+  background-color: none;
+  border: none;
+  width: 40px;
+  height: 35px;
+  font-size: 18px;
+  color: gray;
 }
-.formSizeText{
-    background-color: none;
-    width: 160px;
-    border: none;
-    display: flex;
+.formSizeText {
+  background-color: none;
+  width: 160px;
+  border: none;
+  display: flex;
 }
-.customButton2{
-    background-color: none;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
-    width: 30px;
-    height: 25px;
-    font-size: 18px;
-    color: gray;
-    margin-top: 5px;
-    margin-left: 20px;
+.customButton2 {
+  background-color: none;
+  border: 1px solid #cccccc;
+  border-radius: 3px;
+  width: 30px;
+  height: 25px;
+  font-size: 18px;
+  color: gray;
+  margin-top: 5px;
+  margin-left: 20px;
 }
-.formSizeNumber{
-    color:gray;
-    margin-top: 10px;
-    margin-left: 20px;
-    font-size: 15px;
+.formSizeNumber {
+  color: gray;
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 15px;
 }
 
-.formSelect{
-    background-color: whitesmoke;
-    border: none;
-    margin-left: 20px;
-    margin-top: 8px;
-    font-size: 15px;
-    color: gray;
+.formSelect {
+  background-color: whitesmoke;
+  border: none;
+  margin-left: 20px;
+  margin-top: 8px;
+  font-size: 15px;
+  color: gray;
 }
- .inputAll{
-     outline: none;
-     border: none;
-     margin-left: 10px;
-     font-size: 15px;
-     width: 100%;
- }
- 
+.inputAll {
+  outline: none;
+  border: none;
+  margin-left: 10px;
+  font-size: 15px;
+  width: 100%;
+}
+.dropdown-content {
+  display: none;
+  background-color: #f9f9f9;
+  min-width: 30px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  z-index: 1;
+}
+.dropdown {
+  display: block;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}

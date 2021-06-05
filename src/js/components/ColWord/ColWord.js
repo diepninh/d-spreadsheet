@@ -52,9 +52,6 @@ class ColRow extends React.Component {
             })
           }
         </div>
-        <button style={{ height: this.props.heightCol, border: 'none', borderRadius: 10, marginLeft: 3 }}>
-          +
-        </button>
       </div>
 
     )
